@@ -9,6 +9,7 @@ class BoardView : View {
     private lateinit var mPaint: Paint
     private lateinit var mJonBitmap: Bitmap
     private lateinit var mQBitmap: Bitmap
+    private lateinit var mGame: TicTacToeGame
     private val gridLineWidth:Float = 6F
 
     constructor(context: Context) : super(context, null){
@@ -28,17 +29,64 @@ class BoardView : View {
         this.mQBitmap = BitmapFactory.decodeResource(resources, R.drawable.q)
     }
 
+    fun getBoardCellWidth(): Int { return width / 3 }
+
+    fun getBoardCellHeight(): Int { return height / 3 }
+
+    fun setGame(game: TicTacToeGame){ mGame = game }
+
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
         val boardWidth:Int = width
         val boardHeight:Int = height
 
-        // Gray line
         mPaint.color = Color.LTGRAY
         mPaint.strokeWidth = gridLineWidth
 
-        // Draws the vertical lines
+        val cellWidth = boardWidth / 3
+        drawVerticalLines(canvas, boardWidth, boardHeight)
+        drawHorizontalLines(canvas, boardWidth, cellWidth)
+
+        for (i in 0 until TicTacToeGame.BOARD_SIZE) {
+            val col = i % 3
+            val row = i / 3
+            // Define the boundaries of a destination rectangle for the image
+            val xTopLeft = col * cellWidth
+            val yTopLeft = row * cellWidth
+            val xBottomRight = xTopLeft + cellWidth
+            val yBottomRight = yTopLeft + cellWidth
+
+            if(mGame.getBoardOccupant(i) == TicTacToeGame.J_PLAYER){
+                canvas.drawBitmap(
+                    mJonBitmap,
+                    null,
+                    Rect(xTopLeft, yTopLeft, xBottomRight, yBottomRight),  // dest
+                    null
+                )
+            } else if(mGame.getBoardOccupant(i) == TicTacToeGame.Q_PLAYER){
+                canvas.drawBitmap(
+                    mQBitmap,
+                    null,  // src
+                    Rect(xTopLeft, yTopLeft, xBottomRight, yBottomRight),  // dest
+                    null
+                )
+            }
+        }
+    }
+
+    private fun drawHorizontalLines(canvas: Canvas, boardWidth:Int, cellWidth: Int){
+        canvas.drawLine(0f, cellWidth.toFloat(), boardWidth.toFloat(), cellWidth.toFloat(), mPaint)
+        canvas.drawLine(
+            0f,
+            cellWidth * 2.toFloat(),
+            boardWidth.toFloat(),
+            cellWidth * 2.toFloat(),
+            mPaint
+        )
+    }
+
+    private fun drawVerticalLines(canvas: Canvas, boardWidth: Int, boardHeight: Int) {
         val cellWidth = boardWidth / 3
         canvas.drawLine(cellWidth.toFloat(), 0f, cellWidth.toFloat(), boardHeight.toFloat(), mPaint)
         canvas.drawLine(
@@ -46,16 +94,6 @@ class BoardView : View {
             0f,
             cellWidth * 2.toFloat(),
             boardHeight.toFloat(),
-            mPaint
-        )
-
-        // Draws the horizontal lines
-        canvas.drawLine(0f, cellWidth.toFloat(), boardWidth.toFloat(), cellWidth.toFloat(), mPaint)
-        canvas.drawLine(
-            0f,
-            cellWidth * 2.toFloat(),
-            boardWidth.toFloat(),
-            cellWidth * 2.toFloat(),
             mPaint
         )
     }
