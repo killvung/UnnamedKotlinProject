@@ -1,6 +1,6 @@
 package com.example.youcantrunawayjon
 
-class TicTacToeGame {
+class GameManager {
     private var mBoard: CharArray
 
     companion object {
@@ -16,10 +16,10 @@ class TicTacToeGame {
 
     init {
         mBoard = CharArray(BOARD_SIZE)
-        clearBoard()
+        resetBoard()
     }
 
-    fun clearBoard() {
+    private fun resetBoard() {
         for (i in mBoard.indices) mBoard[i] = OPEN_SPOT
         mBoard[0] = J_PLAYER
         mBoard[2] = Q_PLAYER

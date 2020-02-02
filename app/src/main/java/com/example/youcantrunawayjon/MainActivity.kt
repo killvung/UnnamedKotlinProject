@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mBoardView: BoardView
-    private lateinit var mGame: TicTacToeGame
+    private lateinit var mGameManager: GameManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,9 +23,9 @@ class MainActivity : AppCompatActivity() {
                 .setAction("Action", null).show()
         }
 
-        mGame = TicTacToeGame()
+        mGameManager = GameManager()
         mBoardView = findViewById<View>(R.id.board) as BoardView
-        mBoardView.setGame(mGame)
+        mBoardView.setGame(mGameManager)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -9,7 +9,7 @@ class BoardView : View {
     private lateinit var mPaint: Paint
     private lateinit var mJonBitmap: Bitmap
     private lateinit var mQBitmap: Bitmap
-    private lateinit var mGame: TicTacToeGame
+    private lateinit var mGameManager: GameManager
     private val gridLineWidth:Float = 6F
 
     constructor(context: Context) : super(context, null){
@@ -33,7 +33,7 @@ class BoardView : View {
 
     fun getBoardCellHeight(): Int { return height / 3 }
 
-    fun setGame(game: TicTacToeGame){ mGame = game }
+    fun setGame(gameManager: GameManager){ mGameManager = gameManager }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
@@ -48,7 +48,7 @@ class BoardView : View {
         drawVerticalLines(canvas, boardWidth, boardHeight)
         drawHorizontalLines(canvas, boardWidth, cellWidth)
 
-        for (i in 0 until TicTacToeGame.BOARD_SIZE) {
+        for (i in 0 until GameManager.BOARD_SIZE) {
             val col = i % 3
             val row = i / 3
             // Define the boundaries of a destination rectangle for the image
@@ -57,14 +57,14 @@ class BoardView : View {
             val xBottomRight = xTopLeft + cellWidth
             val yBottomRight = yTopLeft + cellWidth
 
-            if(mGame.getBoardOccupant(i) == TicTacToeGame.J_PLAYER){
+            if(mGameManager.getBoardOccupant(i) == GameManager.J_PLAYER){
                 canvas.drawBitmap(
                     mJonBitmap,
                     null,
                     Rect(xTopLeft, yTopLeft, xBottomRight, yBottomRight),  // dest
                     null
                 )
-            } else if(mGame.getBoardOccupant(i) == TicTacToeGame.Q_PLAYER){
+            } else if(mGameManager.getBoardOccupant(i) == GameManager.Q_PLAYER){
                 canvas.drawBitmap(
                     mQBitmap,
                     null,  // src
