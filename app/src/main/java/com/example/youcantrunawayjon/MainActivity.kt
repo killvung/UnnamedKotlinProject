@@ -1,12 +1,16 @@
 package com.example.youcantrunawayjon
 
+import android.R.attr.button
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,6 +30,29 @@ class MainActivity : AppCompatActivity() {
         mGameManager = GameManager()
         mBoardView = findViewById<View>(R.id.board) as BoardView
         mBoardView.setGame(mGameManager)
+
+        val downButton: Button = findViewById(R.id.down_button)
+        val rightButton: Button = findViewById(R.id.right_button)
+        val resetButton: Button = findViewById(R.id.reset_button)
+
+        downButton.setOnClickListener{
+            Toast.makeText(this,"J walks Down", Toast.LENGTH_SHORT).show()
+            mGameManager.setMove(GameManager.J_PLAYER, mGameManager.getJCurrentPosition()!! + 3)
+
+            mBoardView.invalidate()
+        }
+
+        rightButton.setOnClickListener{
+            Toast.makeText(this,"J walks Right", Toast.LENGTH_SHORT).show()
+            mGameManager.setMove(GameManager.J_PLAYER, mGameManager.getJCurrentPosition()!! + 1)
+            mBoardView.invalidate()
+        }
+
+        resetButton.setOnClickListener{
+            Toast.makeText(this,"Board reset", Toast.LENGTH_SHORT).show()
+            mGameManager.resetBoard()
+            mBoardView.invalidate()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
