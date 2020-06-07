@@ -1,7 +1,5 @@
 package com.example.youcantrunawayjon
 
-import kotlin.properties.Delegates
-
 class GameManager {
     private var mBoard: CharArray
     private lateinit var currentPositionMap: HashMap<Char, Int>
